@@ -1,0 +1,140 @@
+[index.html](https://github.com/user-attachments/files/34241823/index.html)
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PYON INK Web App</title>
+    <!-- Подключаем скрипт Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* БРУТАЛЬНЫЙ СТИЛЬ PYON INK */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000; /* Глубокий черный фон */
+            /* Текстура тату/кожи на фоне (замени ссылку на свою, если есть) */
+            background-image: url('https://i.imgur.com/8Q5FvjB.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace; /* Рубленый шрифт */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* НЕОНОВЫЙ ХЕДЕР */
+        .header {
+            margin-top: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 24px;
+            letter-spacing: 2px;
+            color: #fff;
+            /* Белое свечение логотипа */
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+            animation: flicker 2s infinite alternate; /* Мерцание */
+        }
+
+        /* ТАТУ-РАЗДЕЛИТЕЛЬ */
+        .divider {
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+            margin: 20px 0;
+        }
+
+        /* КОНТЕЙНЕР ДЛЯ КНОПОК */
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 90%;
+            margin-top: 20px;
+        }
+
+        /* СОЧНЫЕ НЕОНОВЫЕ КНОПКИ */
+        .btn {
+            background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный фон */
+            border: 2px solid #fff; /* Белая граница в базе */
+            color: #fff;
+            padding: 20px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 16px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            border-radius: 5px; /* Слегка скругленные углы */
+        }
+
+        /* ЭФФЕКТ СВЕЧЕНИЯ ДЛЯ ПЕРВОЙ КНОПКИ (ЗЕЛЕНЫЙ НЕОН) */
+        .btn-book {
+            border-color: #00FF00;
+            color: #00FF00;
+            text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        /* ЭФФЕКТ ПРИ НАЖАТИИ */
+        .btn:active {
+            transform: scale(0.98);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* АНИМАЦИЯ МЕРЦАНИЯ */
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Шапка с неоновым лого -->
+    <div class="header">PYON INK</div>
+    
+    <!-- Разделитель -->
+    <div class="divider"></div>
+
+    <!-- Главное меню -->
+    <div class="main-menu">
+        <button class="btn btn-book" onclick="startBooking()">⚡ ЗАПИСАТЬСЯ НА СЕАНС</button>
+        <button class="btn" onclick="openPortfolio()">🖼️ ПОРТФОЛИО РАБОТ</button>
+        <button class="btn" onclick="openAddress()">📍 АДРЕС СТУДИИ</button>
+    </div>
+
+    <script>
+        // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Расширяем на все окно
+
+        // ФУНКЦИИ КНОПОК
+        function startBooking() {
+            // Закрываем Web App и отправляем боту данные о начале записи
+            tg.sendData("start_booking"); 
+        }
+
+        function openPortfolio() {
+            tg.sendData("open_portfolio");
+        }
+
+        function openAddress() {
+            tg.sendData("open_address");
+        }
+    </script>
+</body>
+</html>

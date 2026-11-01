@@ -8,9 +8,9 @@
     <style>
         body {
             margin: 0;
-            padding: 15px;
-            background-color: #050505;
-            color: #fff;
+            padding: 20px;
+            background-color: #000000;
+            color: #ffffff;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
@@ -20,90 +20,97 @@
             text-align: center;
             text-transform: uppercase;
             font-weight: bold;
-            font-size: 24px;
-            letter-spacing: 3px;
-            color: #fff;
-            text-shadow: 0 0 10px #00FF00;
+            font-size: 28px;
+            letter-spacing: 4px;
+            color: #ffffff;
+            text-shadow: 0 0 15px #ffffff;
             margin-top: 10px;
         }
         .subtitle {
-            font-size: 11px;
-            color: #888;
-            letter-spacing: 2px;
+            font-size: 13px;
+            color: #aaaaaa;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 15px;
-        }
-        .divider {
-            width: 80%;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(0,255,0,0) 0%, rgba(0,255,0,1) 50%, rgba(0,255,0,0) 100%);
             margin-bottom: 20px;
         }
+        .divider {
+            width: 90%;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255,0,0,0) 0%, rgba(255,0,0,1) 50%, rgba(255,0,0,0) 100%);
+            margin-bottom: 25px;
+        }
         .section-card {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 15px;
+            background: rgba(15, 15, 15, 0.95);
+            border: 2px solid #333333;
+            border-radius: 12px;
+            padding: 20px;
             width: 100%;
-            max-width: 350px;
-            margin-bottom: 15px;
+            max-width: 380px;
+            margin-bottom: 20px;
             box-sizing: border-box;
         }
         .section-title {
-            font-size: 14px;
-            color: #00FF00;
-            margin-bottom: 10px;
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 12px;
             text-transform: uppercase;
             font-weight: bold;
+            letter-spacing: 1px;
         }
         .label {
-            font-size: 12px;
-            color: #aaa;
-            margin-top: 8px;
+            font-size: 13px;
+            color: #cccccc;
+            margin-top: 10px;
             display: block;
+            text-transform: uppercase;
         }
         input, select, textarea {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            background: #111;
-            border: 1px solid #555;
-            color: #fff;
-            border-radius: 5px;
+            padding: 14px;
+            margin-top: 8px;
+            background: #0a0a0a;
+            border: 2px solid #444444;
+            color: #ffffff;
+            border-radius: 8px;
             box-sizing: border-box;
             font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+        }
+        input[type="date"] {
+            color-scheme: dark;
         }
         .btn {
-            background-color: rgba(20, 20, 20, 0.9);
-            border: 2px solid #fff;
-            color: #fff;
-            padding: 12px;
+            background-color: #111111;
+            border: 2px solid #ffffff;
+            color: #ffffff;
+            padding: 16px;
             text-transform: uppercase;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 15px;
             cursor: pointer;
             width: 100%;
             text-align: center;
-            border-radius: 6px;
-            margin-top: 10px;
+            border-radius: 8px;
+            margin-top: 12px;
+            letter-spacing: 1px;
             transition: all 0.2s ease;
         }
-        /* Красная кнопка для записи с авансом */
+        /* АДСКИ КРАСНАЯ КНОПКА АВАНСА */
         .btn-advance {
             border-color: #FF0000;
-            background-color: rgba(255, 0, 0, 0.15);
-            color: #FF5555;
-            text-shadow: 0 0 5px #FF0000;
-            box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
+            background-color: #FF0000;
+            color: #ffffff;
+            font-size: 16px;
+            text-shadow: 0 0 8px #000000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
         }
         .btn-book {
             border-color: #00FF00;
             color: #00FF00;
-            text-shadow: 0 0 5px #00FF00;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+            background-color: rgba(0, 255, 0, 0.1);
         }
         .btn:active {
-            transform: scale(0.97);
+            transform: scale(0.96);
         }
     </style>
 </head>
@@ -116,7 +123,7 @@
     <div class="section-card">
         <div class="section-title">📅 Выбор даты и времени (с 11:00)</div>
         
-        <label class="label">Календарь на месяц (выбери день):</label>
+        <label class="label">Выбери дату на месяц:</label>
         <input type="date" id="bookingDate">
 
         <label class="label">Время сеанса:</label>
@@ -126,26 +133,29 @@
             <option value="17:00">17:00 (Вечерний сеанс)</option>
         </select>
 
-        <!-- Красная кнопка для записи с авансом -->
-        <button class="btn btn-advance" onclick="submitBooking('with_advance')">🔥 ЗАПИСАТЬСЯ С АВАНСОМ (Гарантия)</button>
+        <label class="label">Прикрепить фото идеи (эскиз/референс):</label>
+        <input type="file" id="clientPhoto" accept="image/*">
+
+        <!-- КРАСНАЯ КНОПКА АВАНСА -->
+        <button class="btn btn-advance" onclick="submitBooking('with_advance')">🔥 ЗАПИСАТЬСЯ С АВАНСОМ</button>
         
-        <!-- Обычная кнопка (без аванса, на усмотрение админа) -->
-        <button class="btn btn-book" onclick="submitBooking('without_advance')">⚡ Записаться без аванса (Ожидание)</button>
+        <!-- Кнопка без аванса -->
+        <button class="btn btn-book" onclick="submitBooking('without_advance')">⚡ Записаться без аванса</button>
     </div>
 
-    <!-- Помощник по эскизам и консультация -->
+    <!-- Помощник по эскизам (Pinterest) -->
     <div class="section-card">
-        <div class="section-title">💡 Помощник по эскизам</div>
-        <label class="label">Опиши свою идею для тату:</label>
-        <textarea id="sketchIdea" rows="2" placeholder="Например: киберпанк тигр на предплечье..."></textarea>
-        <button class="btn" onclick="searchSketch()">🔍 Найти референсы (Pinterest)</button>
+        <div class="section-title">💡 Поиск эскизов</div>
+        <label class="label">Опиши идею для поиска:</label>
+        <textarea id="sketchIdea" rows="2" placeholder="Например: киберпанк рукав..."></textarea>
+        <button class="btn" onclick="searchSketch()">🔍 Найти в Pinterest</button>
     </div>
 
-    <!-- Адрес и контакты -->
+    <!-- Адрес и консультация в СМС (Telegram) -->
     <div class="section-card">
-        <div class="section-title">📍 Адрес студии</div>
-        <button class="btn" onclick="openAddress()">🗺️ Открыть в Яндекс.Картах</button>
-        <button class="btn" onclick="consultMaster()">💬 Консультация с мастером</button>
+        <div class="section-title">📍 Связь и адрес</div>
+        <button class="btn" onclick="openAddress()">🗺️ Адрес (Яндекс.Карты)</button>
+        <button class="btn" onclick="consultMaster()">💬 Консультация с мастером (SMS)</button>
     </div>
 
     <script>
@@ -157,7 +167,7 @@
             const time = document.getElementById('bookingTime').value;
 
             if (!date) {
-                alert("Пожалуйста, выберите дату в календаре!");
+                alert("Пожалуйста, выбери дату в календаре!");
                 return;
             }
 
@@ -187,10 +197,12 @@
         }
 
         function consultMaster() {
+            // Переход на прямой диалог с мастером в Telegram (вставь свой юзернейм или ID)
+            const masterChatUrl = "https://t.me/batmansasha37_tech"; 
             if (tg) {
-                tg.sendData(JSON.stringify({ action: "consultation" }));
+                tg.openTelegramLink(masterChatUrl);
             } else {
-                alert("Запрос на консультацию отправлен мастеру.");
+                window.open(masterChatUrl, "_blank");
             }
         }
     </script>

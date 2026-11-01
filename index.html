@@ -3,103 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PYON INK Web App</title>
+    <title>PYON INK - Личный кабинет</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             margin: 0;
-            padding: 0;
+            padding: 15px;
             background-color: #050505;
             color: #fff;
             font-family: 'Courier New', Courier, monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
         }
         .header {
             text-align: center;
             text-transform: uppercase;
             font-weight: bold;
-            font-size: 28px;
+            font-size: 24px;
             letter-spacing: 3px;
             color: #fff;
-            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
-            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00FF00;
+            margin-top: 10px;
         }
         .subtitle {
-            font-size: 12px;
+            font-size: 11px;
             color: #888;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
         .divider {
-            width: 70%;
+            width: 80%;
             height: 2px;
             background: linear-gradient(90deg, rgba(0,255,0,0) 0%, rgba(0,255,0,1) 50%, rgba(0,255,0,0) 100%);
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
-        .main-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 85%;
+        .section-card {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            width: 100%;
             max-width: 350px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        .section-title {
+            font-size: 14px;
+            color: #00FF00;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .label {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 8px;
+            display: block;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: #111;
+            border: 1px solid #555;
+            color: #fff;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
         }
         .btn {
             background-color: rgba(20, 20, 20, 0.9);
             border: 2px solid #fff;
             color: #fff;
-            padding: 18px;
+            padding: 12px;
             text-transform: uppercase;
             font-weight: bold;
-            font-size: 15px;
-            letter-spacing: 1px;
+            font-size: 13px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            width: 100%;
             text-align: center;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            -webkit-tap-highlight-color: transparent;
+            border-radius: 6px;
+            margin-top: 10px;
+            transition: all 0.2s ease;
         }
         .btn-book {
             border-color: #00FF00;
             color: #00FF00;
             text-shadow: 0 0 5px #00FF00;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         }
         .btn:active {
-            transform: scale(0.95);
-            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(0.97);
         }
     </style>
 </head>
 <body>
     <div class="header">PYON INK</div>
-    <div class="subtitle">Tattoo Studio</div>
+    <div class="subtitle">Студия художественной татуировки</div>
     <div class="divider"></div>
-    
-    <div class="main-menu">
-        <button class="btn btn-book" onclick="startBooking()">⚡ ЗАПИСАТЬСЯ НА СЕАНС</button>
-        <button class="btn" onclick="openPortfolio()">🖼️ ПОРТФОЛИО РАБОТ</button>
-        <button class="btn" onclick="openAddress()">📍 АДРЕС СТУДИИ</button>
+
+    <!-- Блок записи -->
+    <div class="section-card">
+        <div class="section-title">📅 Онлайн-запись (с 11:00)</div>
+        
+        <label class="label">Выбрать дату:</label>
+        <input type="date" id="bookingDate">
+
+        <label class="label">Время сеанса (открытие в 11:00):</label>
+        <select id="bookingTime">
+            <option value="11:00">11:00 (Утренний сеанс)</option>
+            <option value="14:00">14:00 (Дневной сеанс)</option>
+            <option value="17:00">17:00 (Вечерний сеанс)</option>
+        </select>
+
+        <label class="label">Тип бронирования:</label>
+        <select id="bookingType">
+            <option value="with_advance">С авансом (Гарантия слота)</option>
+            <option value="without_advance">Без аванса (Требует одобрения мастера)</option>
+        </select>
+
+        <button class="btn btn-book" onclick="submitBooking()">⚡ Отправить заявку на запись</button>
+    </div>
+
+    <!-- Быстрые ссылки -->
+    <div class="section-card">
+        <div class="section-title">🔗 Быстрые разделы</div>
+        <button class="btn" onclick="openPortfolio()">🖼️ Портфолио (Pinterest)</button>
+        <button class="btn" onclick="openAddress()">📍 Адрес и Яндекс.Карты</button>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        const tg = window.Telegram?.WebApp;
+        if (tg) { tg.expand(); }
 
-        function startBooking() {
-            tg.sendData("start_booking");
+        function submitBooking() {
+            const date = document.getElementById('bookingDate').value;
+            const time = document.getElementById('bookingTime').value;
+            const type = document.getElementById('bookingType').value;
+
+            if (!date) {
+                alert("Пожалуйста, выберите дату сеанса!");
+                return;
+            }
+
+            const payload = JSON.stringify({
+                action: "new_booking",
+                date: date,
+                time: time,
+                type: type
+            });
+
+            if (tg && tg.sendData) {
+                tg.sendData(payload);
+            } else {
+                alert("Тестовый режим (вне Telegram). Данные: " + payload);
+            }
         }
+
         function openPortfolio() {
-            tg.sendData("open_portfolio");
+            if (tg) {
+                tg.openLink("https://www.pinterest.com/");
+            } else {
+                window.open("https://www.pinterest.com/", "_blank");
+            }
         }
+
         function openAddress() {
-            tg.sendData("open_address");
+            if (tg) {
+                tg.openLink("https://yandex.ru/maps/");
+            } else {
+                window.open("https://yandex.ru/maps/", "_blank");
+            }
         }
     </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PYON INK - Личный кабинет</title>
+    <title>PYON INK - Запись на сеанс</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -62,7 +62,7 @@
             margin-top: 8px;
             display: block;
         }
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -88,6 +88,14 @@
             margin-top: 10px;
             transition: all 0.2s ease;
         }
+        /* Красная кнопка для записи с авансом */
+        .btn-advance {
+            border-color: #FF0000;
+            background-color: rgba(255, 0, 0, 0.15);
+            color: #FF5555;
+            text-shadow: 0 0 5px #FF0000;
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
+        }
         .btn-book {
             border-color: #00FF00;
             color: #00FF00;
@@ -104,47 +112,52 @@
     <div class="subtitle">Студия художественной татуировки</div>
     <div class="divider"></div>
 
-    <!-- Блок записи -->
+    <!-- Блок календаря и записи -->
     <div class="section-card">
-        <div class="section-title">📅 Онлайн-запись (с 11:00)</div>
+        <div class="section-title">📅 Выбор даты и времени (с 11:00)</div>
         
-        <label class="label">Выбрать дату:</label>
+        <label class="label">Календарь на месяц (выбери день):</label>
         <input type="date" id="bookingDate">
 
-        <label class="label">Время сеанса (открытие в 11:00):</label>
+        <label class="label">Время сеанса:</label>
         <select id="bookingTime">
             <option value="11:00">11:00 (Утренний сеанс)</option>
             <option value="14:00">14:00 (Дневной сеанс)</option>
             <option value="17:00">17:00 (Вечерний сеанс)</option>
         </select>
 
-        <label class="label">Тип бронирования:</label>
-        <select id="bookingType">
-            <option value="with_advance">С авансом (Гарантия слота)</option>
-            <option value="without_advance">Без аванса (Требует одобрения мастера)</option>
-        </select>
-
-        <button class="btn btn-book" onclick="submitBooking()">⚡ Отправить заявку на запись</button>
+        <!-- Красная кнопка для записи с авансом -->
+        <button class="btn btn-advance" onclick="submitBooking('with_advance')">🔥 ЗАПИСАТЬСЯ С АВАНСОМ (Гарантия)</button>
+        
+        <!-- Обычная кнопка (без аванса, на усмотрение админа) -->
+        <button class="btn btn-book" onclick="submitBooking('without_advance')">⚡ Записаться без аванса (Ожидание)</button>
     </div>
 
-    <!-- Быстрые ссылки -->
+    <!-- Помощник по эскизам и консультация -->
     <div class="section-card">
-        <div class="section-title">🔗 Быстрые разделы</div>
-        <button class="btn" onclick="openPortfolio()">🖼️ Портфолио (Pinterest)</button>
-        <button class="btn" onclick="openAddress()">📍 Адрес и Яндекс.Карты</button>
+        <div class="section-title">💡 Помощник по эскизам</div>
+        <label class="label">Опиши свою идею для тату:</label>
+        <textarea id="sketchIdea" rows="2" placeholder="Например: киберпанк тигр на предплечье..."></textarea>
+        <button class="btn" onclick="searchSketch()">🔍 Найти референсы (Pinterest)</button>
+    </div>
+
+    <!-- Адрес и контакты -->
+    <div class="section-card">
+        <div class="section-title">📍 Адрес студии</div>
+        <button class="btn" onclick="openAddress()">🗺️ Открыть в Яндекс.Картах</button>
+        <button class="btn" onclick="consultMaster()">💬 Консультация с мастером</button>
     </div>
 
     <script>
         const tg = window.Telegram?.WebApp;
         if (tg) { tg.expand(); }
 
-        function submitBooking() {
+        function submitBooking(type) {
             const date = document.getElementById('bookingDate').value;
             const time = document.getElementById('bookingTime').value;
-            const type = document.getElementById('bookingType').value;
 
             if (!date) {
-                alert("Пожалуйста, выберите дату сеанса!");
+                alert("Пожалуйста, выберите дату в календаре!");
                 return;
             }
 
@@ -158,23 +171,26 @@
             if (tg && tg.sendData) {
                 tg.sendData(payload);
             } else {
-                alert("Тестовый режим (вне Telegram). Данные: " + payload);
+                alert("Тест (вне Telegram) [Тип: " + type + "]: Дата " + date + " на " + time);
             }
         }
 
-        function openPortfolio() {
-            if (tg) {
-                tg.openLink("https://www.pinterest.com/");
-            } else {
-                window.open("https://www.pinterest.com/", "_blank");
-            }
+        function searchSketch() {
+            const query = document.getElementById('sketchIdea').value.trim();
+            const url = query ? `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query + ' tattoo')}` : "https://www.pinterest.com/";
+            if (tg) { tg.openLink(url); } else { window.open(url, "_blank"); }
         }
 
         function openAddress() {
+            const mapUrl = "https://yandex.ru/maps/";
+            if (tg) { tg.openLink(mapUrl); } else { window.open(mapUrl, "_blank"); }
+        }
+
+        function consultMaster() {
             if (tg) {
-                tg.openLink("https://yandex.ru/maps/");
+                tg.sendData(JSON.stringify({ action: "consultation" }));
             } else {
-                window.open("https://yandex.ru/maps/", "_blank");
+                alert("Запрос на консультацию отправлен мастеру.");
             }
         }
     </script>

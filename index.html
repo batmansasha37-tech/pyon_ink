@@ -164,7 +164,8 @@
 
         function submitBooking(type) {
             const date = document.getElementById('bookingDate').value;
-            const time = document.getElementById('bookingTime').value;
+            const timeElement = document.getElementById('bookingTime');
+            const time = timeElement ? timeElement.value : "11:00";
 
             if (!date) {
                 alert("Пожалуйста, выбери дату в календаре!");
@@ -197,7 +198,6 @@
         }
 
         function consultMaster() {
-            // Переход на прямой диалог с мастером в Telegram (вставь свой юзернейм или ID)
             const masterChatUrl = "https://t.me/batmansasha37_tech"; 
             if (tg) {
                 tg.openTelegramLink(masterChatUrl);
